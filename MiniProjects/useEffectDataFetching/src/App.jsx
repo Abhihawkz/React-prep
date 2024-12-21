@@ -3,6 +3,9 @@ import "./App.css";
 
 function App() {
   const [todo, setTodo] = useState([]);
+  const [count ,setCount] = useState(0)
+  const [something ,setSomething] = useState(0)
+
 
   useEffect(() => {
     const getData = async () => {
@@ -15,7 +18,26 @@ function App() {
     getData()
   }, []);
 
+
+  useEffect(()=>{
+    console.log("count changed")
+  },[count])
+
   return <>
+  <div>
+    count : {count} SomethingCount : {something}
+    <br />
+    <br />
+    <button onClick={()=>{
+      setCount(count + 1)
+    }}>click</button>
+    <button onClick={()=>{
+      setSomething(something+2)
+    }}>something</button>
+  </div>
+  <br />
+    <br /><br />
+    <br />
   <div>
   <ol>
   
