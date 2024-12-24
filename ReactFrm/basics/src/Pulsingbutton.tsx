@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useState } from "react";
 // const Pulsingbutton = () => {
 //   return (
 //     <div className="h-screen bg-black flex items-center justify-center">
@@ -9,14 +10,37 @@ import { motion } from "motion/react";
 
 // export default Pulsingbutton;
 
+// const Pulsingbutton = () => {
+//   return (
+//     <div className="h-screen bg-black flex items-center justify-center">
+//         {[...Array(3)].map((_,index) => {
+//             return <motion.div key={index} className="h-14 w-14 rounded-full bg-teal-400 ml-5" animate={{y:[0,-15,0]}} transition={{duration:0.5 , ease:"easeInOut",repeat:Infinity,repeatDelay:index*0.2}}></motion.div>
+//         })}
+//     </div>
+//   )
+// }
+
+// export default Pulsingbutton
+
+
 const Pulsingbutton = () => {
+    const [visiblity,setVisiblity] = useState(false);
+    const varients = {
+        hidden:{opacity : 0 , scale : 0.5},
+        visible:{opacity : 1 , scale : 1},
+        exit:{opacity : 0.5 , scale : 0.7},
+    }
+
   return (
     <div className="h-screen bg-black flex items-center justify-center">
-        {[...Array(3)].map((_,index) => {
-            return <motion.div key={index} className="h-14 w-14 rounded-full bg-teal-400 ml-5" animate={{y:[0,-15,0]}} transition={{duration:0.5 , ease:"easeInOut",repeat:Infinity,repeatDelay:index*0.2}}></motion.div>
-        })}
+        <motion.div className="w-[150px] h-[150px] bg-yellow-300" variants={varients} 
+        initial={varients.hidden}
+        animate={visiblity ? varients.visible : varients.hidden}
+        exit={varients.exit}
+        onClick={()=>setVisiblity(!visiblity)}
+        ></motion.div>
     </div>
   )
 }
 
-export default Pulsingbutton
+export default Pulsingbutton;
