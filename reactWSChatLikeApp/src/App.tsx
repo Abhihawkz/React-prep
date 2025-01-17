@@ -26,33 +26,39 @@ export default function App() {
   }, [])
 
   return (
-    <div className="font-sans p-6">
-      <div className="mb-6 border-b border-gray-300 pb-4">
-        {messages.map((m, index) => (
-          <div key={index} className="p-2 bg-gray-100 mb-2 rounded-md">
-            {m}
-          </div>
-        ))}
-      </div>
-      <div className="flex items-center">
-        <input
-          type="text"
-          ref={inputRef}
-          className="p-3 text-lg border rounded-md border-gray-300 w-72 mr-4"
-        />
-        <button
-          onClick={() => {
-            wsRef.current.send(JSON.stringify({
-              type: "chat",
-              payload: {
-                message: inputRef.current.value
-              }
-            }))
-          }}
-          className="p-3 text-lg bg-blue-500 text-white rounded-md hover:bg-blue-600"
-        >
-          Send Message
-        </button>
+    <div className="min-h-screen bg-gradient-to-r from-indigo-400 to-blue-500 flex items-center justify-center">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-xl p-6">
+        <h1 className="text-3xl font-semibold text-center text-indigo-600 mb-6">Chat Room</h1>
+        
+        <div className="space-y-4 mb-6 h-96 overflow-auto p-4 bg-gray-50 rounded-md border border-gray-200">
+          {messages.map((m, index) => (
+            <div key={index} className="p-3 bg-gray-100 rounded-lg shadow-sm">
+              <p className="text-gray-700">{m}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex space-x-4">
+          <input
+            type="text"
+            ref={inputRef}
+            className="flex-1 p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Type a message..."
+          />
+          <button
+            onClick={() => {
+              wsRef.current.send(JSON.stringify({
+                type: "chat",
+                payload: {
+                  message: inputRef.current.value
+                }
+              }))
+            }}
+            className="px-6 py-3 text-white bg-indigo-600 rounded-lg shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300"
+          >
+            Send
+          </button>
+        </div>
       </div>
     </div>
   )
