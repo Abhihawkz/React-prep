@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 
 export default function App() {
-  const [messages, setMessages] = useState([{ text: "hello man", sender: "server" }])
+  const [messages, setMessages] = useState([{ text: "Hello! Welcome to the chat.", sender: "server" }])
   const wsRef = useRef();
   const inputRef = useRef<HTMLInputElement>("");
 
@@ -43,16 +43,16 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-indigo-400 to-blue-500 flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-xl p-6">
-        <h1 className="text-3xl font-semibold text-center text-indigo-600 mb-6">Chat Room</h1>
+    <div className="min-h-screen bg-gradient-to-br from-pink-300 via-indigo-300 to-blue-500 flex items-center justify-center">
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-xl p-6 space-y-6">
+        <h1 className="text-4xl font-bold text-center text-indigo-700">Chat Room</h1>
         
-        <div className="space-y-4 mb-6 h-96 overflow-auto p-4 bg-gray-50 rounded-md border border-gray-200">
+        <div className="space-y-4 h-96 overflow-auto p-4 bg-gray-50 rounded-xl border border-gray-200 shadow-md">
           {messages.map((m, index) => (
             <div
               key={index}
-              className={`p-3 rounded-lg shadow-sm max-w-xs ${
-                m.sender === "user" ? "bg-indigo-600 text-white ml-auto" : "bg-gray-100 text-gray-700"
+              className={`p-4 rounded-xl shadow-sm max-w-xs ${
+                m.sender === "user" ? "bg-gradient-to-r from-indigo-600 to-purple-700 text-white ml-auto" : "bg-gray-100 text-gray-800"
               }`}
             >
               <p>{m.text}</p>
@@ -60,16 +60,16 @@ export default function App() {
           ))}
         </div>
 
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 items-center">
           <input
             type="text"
             ref={inputRef}
-            className="flex-1 p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="flex-1 p-4 text-lg rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100 placeholder-gray-500"
             placeholder="Type a message..."
           />
           <button
             onClick={handleSendMessage}
-            className="px-6 py-3 text-white bg-indigo-600 rounded-lg shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300"
+            className="px-6 py-3 text-white bg-indigo-600 rounded-xl shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300"
           >
             Send
           </button>
