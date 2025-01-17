@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react"
 
 export default function App() {
-  const [messages, setMessages] = useState(['hello man'])
+  const [messages, setMessages] = useState([{ text: "hello man", sender: "server" }])
   const wsRef = useRef();
   const inputRef = useRef<HTMLInputElement>("");
 
   useEffect(() => {
     const wss = new WebSocket("ws://localhost:8080")
     wss.onmessage = (event) => {
-      setMessages(m => [...m, event.data])
+      setMessages(m => [...m, { text: event.data, sender: "server" }])
     }
     wsRef.current = wss;
     wss.onopen = () => {
@@ -25,6 +25,23 @@ export default function App() {
     }
   }, [])
 
+  const handleSendMessage = () => {
+    const message = inputRef.current.value;
+    if (message.trim()) {
+      // Add the user's message to the chat
+      setMessages(m => [...m, { text: message, sender: "user" }]);
+      
+      // Send the message to the WebSocket server
+      wsRef.current.send(JSON.stringify({
+        type: "chat",
+        payload: { message }
+      }));
+
+      // Clear the input field after sending the message
+      inputRef.current.value = '';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-indigo-400 to-blue-500 flex items-center justify-center">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-xl p-6">
@@ -32,8 +49,13 @@ export default function App() {
         
         <div className="space-y-4 mb-6 h-96 overflow-auto p-4 bg-gray-50 rounded-md border border-gray-200">
           {messages.map((m, index) => (
-            <div key={index} className="p-3 bg-gray-100 rounded-lg shadow-sm">
-              <p className="text-gray-700">{m}</p>
+            <div
+              key={index}
+              className={`p-3 rounded-lg shadow-sm max-w-xs ${
+                m.sender === "user" ? "bg-indigo-600 text-white ml-auto" : "bg-gray-100 text-gray-700"
+              }`}
+            >
+              <p>{m.text}</p>
             </div>
           ))}
         </div>
@@ -46,14 +68,7 @@ export default function App() {
             placeholder="Type a message..."
           />
           <button
-            onClick={() => {
-              wsRef.current.send(JSON.stringify({
-                type: "chat",
-                payload: {
-                  message: inputRef.current.value
-                }
-              }))
-            }}
+            onClick={handleSendMessage}
             className="px-6 py-3 text-white bg-indigo-600 rounded-lg shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300"
           >
             Send
